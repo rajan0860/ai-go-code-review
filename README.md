@@ -3,8 +3,8 @@
 > AI-Powered Go Code Review Assistant - Combining static analysis 
   with LLM insights to catch bugs, security issues, and code quality problems.
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/rajanmehta/ai-go-code-review)](https://goreportcard.com/report/github.com/rajanmehta/ai-go-code-review)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
 
 ## ✨ Features
 
@@ -15,18 +15,28 @@
 
 ## 🚀 Quick Start
 
+### Installation
 ```bash
-# Install
-go install goreview@latest
+go install github.com/rajanmehta/ai-go-code-review@latest
+```
 
+### Build from Source
+```bash
+git clone https://github.com/rajanmehta/ai-go-code-review.git
+cd ai-go-code-review
+go build -o goreview
+```
+
+### Usage
+```bash
 # Review a Go file
-goreview review myfile.go
+./goreview review myfile.go
 
 # Review entire directory
-goreview review ./src
+./goreview review ./src
 
 # Export results as JSON
-goreview review ./src --format json > results.json
+./goreview review ./src --format json > results.json
 ```
 
 ## 📊 Example Output
@@ -44,22 +54,18 @@ goreview review ./src --format json > results.json
 
 GoReview combines multiple analysis techniques:
 
-```
-Go Source Code
-      ↓
-┌─────────────────────────┐
-│  Static Analysis        │ ← Detects syntax, style, security issues
-│  └─ AST Parsing        │
-│  └─ Linting Rules      │
-└─────────────────────────┘
-      ↓
-┌─────────────────────────┐
-│  LLM Analysis           │ ← GPT-4 or Claude
-│  └─ Code Understanding │
-│  └─ Best Practices     │
-└─────────────────────────┘
-      ↓
-Quality Scoring & Report
+```mermaid
+graph TD
+    A[Go Source Code] --> B[Static Analysis]
+    B --> C{Review Engine}
+    A --> D[LLM Context Extraction]
+    D --> E[AI Analysis (GPT-4 / Claude)]
+    E --> C
+    C --> F[Final Report]
+    
+    style A fill:#e1f5fe,stroke:#01579b
+    style F fill:#e8f5e9,stroke:#2e7d32
+    style C fill:#fff3e0,stroke:#ef6c00
 ```
 
 ## 💡 Use Cases
@@ -74,13 +80,21 @@ Quality Scoring & Report
 
 ## 🔧 Configuration
 
-Create a `.goreview.yml` in your project root:
+### Local Models (Ollama)
+GoReview uses **Ollama** by default. Ensure Ollama is installed and running.
 
-```yaml
-ai_provider: "openai"  # or "anthropic"
-quality_threshold: 7.5
-enable_security_checks: true
-enable_performance_tips: true
+To change the model:
+```bash
+export OLLAMA_MODEL="llama3"
+# or
+export OLLAMA_MODEL="mistral"
+```
+
+### Cloud Models (Optional)
+To use OpenAI or Anthropic, set the API key (support to be re-enabled via flags):
+
+```bash
+export OPENAI_API_KEY="your-api-key"
 ```
 
 ## 📦 API Configuration
