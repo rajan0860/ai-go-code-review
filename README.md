@@ -1,141 +1,102 @@
-# TNG Script Explorer Chatbot
+# GoReview
 
-## Overview
+> AI-Powered Go Code Review Assistant - Combining static analysis 
+  with LLM insights to catch bugs, security issues, and code quality problems.
 
-Star Trek: The Next Generation spans seven seasons filled with philosophical debates, technical challenges, and memorable dialogue. This project explores a simple idea:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
 
-**What if you could ask questions about TNG and get answers based on real episode scripts—while also checking facts and doing simple calculations when needed?**
+## ✨ Features
 
-The **TNG Script Explorer Chatbot** is an experimental assistant that combines script search, web lookup, and basic reasoning tools to give clearer, more reliable answers.
+- **Static Analysis** - Comprehensive Go code linting and analysis
+- **AI-Powered Review** - Leverages GPT-4 and Claude for intelligent insights
+- **Quality Scoring** - 6-dimensional quality assessment framework
+- **Flexible Output** - Multiple format options (JSON, terminal, HTML)
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-  - [The Problem](#the-problem)
-  - [What This Project Solves](#what-this-project-solves)
-- [Installation](#installation)
-- [Usage](#usage)
-- [How It Works](#how-it-works)
-- [Who It’s For](#who-its-for)
-- [Project Structure](#project-structure)
-- [Data Sources](#data-sources)
-- [Limitations & Future Vision](#limitations--future-vision)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Features
-
-### The Problem
-
-Fans and researchers often face several challenges when exploring Star Trek: The Next Generation:
-* Scripts and transcripts are spread across many websites.
-* Finding specific moments or quotes can be time-consuming.
-* Regular chatbots may guess or invent answers.
-* Some questions require extra context, like episode air dates, counts, or comparisons.
-
-In short, no single tool provides grounded answers, background context, and basic reasoning together.
-
-### What This Project Solves
-
-**TNGRAGChatbot** combines multiple tools to provide reliable answers:
-
-*   **Script Search (RAG)** – Finds relevant TNG scenes and dialogue to ground responses.
-*   **Web Search** – Retrieves factual information from public sources when needed (e.g., episode air dates, production info).
-*   **Math & Logic Helper** – Handles calculations, comparisons, and counts accurately.
-
-Together, these capabilities let users ask anything from *“What did Picard say about the Prime Directive?”* to *“How many episodes feature Data learning about humor?”*, and get precise, grounded answers.
-
-## Installation
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/yourusername/MLProjects.git
-    cd MLProjects
-    ```
-
-2.  **Create a virtual environment** (optional but recommended):
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-
-3.  **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## Usage
-
-To run the chatbot:
+## 🚀 Quick Start
 
 ```bash
-python main.py
+# Install
+go install goreview@latest
+
+# Review a Go file
+goreview review myfile.go
+
+# Review entire directory
+goreview review ./src
+
+# Export results as JSON
+goreview review ./src --format json > results.json
 ```
 
-*Note: Usage instructions will be updated as the project develops.*
+## 📊 Example Output
 
-## How It Works
-
-The chatbot uses a combination of help tools working together:
-
-### 1. Script Search (RAG)
-When you ask a question about TNG, the chatbot first searches through the episode transcripts to find relevant scenes or dialogue. It then builds its response using those exact passages, instead of guessing.
-
-### 2. Web Search
-For questions that go beyond the scripts—such as episode air dates, production details, or historical context—the chatbot can briefly look up reliable public information to support the answer.
-
-### 3. Math & Logic Helper
-Some questions involve counting episodes, comparing seasons, or doing simple calculations. A built-in math helper ensures these answers are accurate instead of estimated.
-
-**Together, these tools help the chatbot think before it speaks.**
-
-## Who It’s For
-
-*   **Star Trek fans** who want a conversational companion.
-*   **Writers** studying dialogue or storytelling.
-*   **People exploring ethics, leadership, and technology** in TNG.
-*   **Anyone curious** about episode details, quotes, or numeric facts.
-
-## Project Structure
-
-```text
-MLProjects/
-├── README.md          # Project documentation
-├── requirements.txt   # Python dependencies (coming soon)
-├── src/               # Source code (coming soon)
-│   ├── app.py         # Main application entry point
-│   └── ...
-└── data/              # Data files (transcripts, etc.)
+```
+✓ main.go: Quality Score 8.5/10
+├─ Issues Found: 2
+│  ├─ warn: Unused import "fmt"
+│  └─ error: Potential race condition on line 42
+├─ Coverage: 78%
+└─ Security: High
 ```
 
-## Data Sources
+## 🏗️ How It Works
 
-*   Fan-created transcripts of *Star Trek: The Next Generation*.
-*   Publicly available web sources for factual context.
+GoReview combines multiple analysis techniques:
 
-*All script content is used locally for personal and educational purposes.*
+```
+Go Source Code
+      ↓
+┌─────────────────────────┐
+│  Static Analysis        │ ← Detects syntax, style, security issues
+│  └─ AST Parsing        │
+│  └─ Linting Rules      │
+└─────────────────────────┘
+      ↓
+┌─────────────────────────┐
+│  LLM Analysis           │ ← GPT-4 or Claude
+│  └─ Code Understanding │
+│  └─ Best Practices     │
+└─────────────────────────┘
+      ↓
+Quality Scoring & Report
+```
 
-## Limitations & Future Vision
+## 💡 Use Cases
 
-### Limitations
-*   The chatbot only knows what it can find in the transcripts or public sources.
-*   It does not replace official reference materials.
-*   Other Star Trek series are not included yet.
+| Use Case | Benefit |
+|----------|---------|
+| **AI-Generated Code** | Validate code produced by ChatGPT, Claude, or other AI models |
+| **Pre-commit Hooks** | Catch issues before they reach your repository |
+| **CI/CD Integration** | Automated reviews in GitHub Actions, GitLab CI, or Jenkins |
+| **Code Learning** | Understand Go best practices through detailed feedback |
+| **Code Audits** | Quick assessment of large codebases |
 
-### Future Vision
-*   Adding more Star Trek series.
-*   Creating character-specific personalities.
-*   Improving conversational flow.
-*   Making the chatbot feel more like the Enterprise computer.
-*   Expanding research and reasoning abilities.
+## 🔧 Configuration
 
-## Contributing
+Create a `.goreview.yml` in your project root:
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+```yaml
+ai_provider: "openai"  # or "anthropic"
+quality_threshold: 7.5
+enable_security_checks: true
+enable_performance_tips: true
+```
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+## 📦 API Configuration
+
+Set environment variables for LLM access:
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+# OR
+export ANTHROPIC_API_KEY="your-api-key"
+```
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
