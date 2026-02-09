@@ -59,7 +59,7 @@ graph TD
     A[Go Source Code] --> B[Static Analysis]
     B --> C{Review Engine}
     A --> D[LLM Context Extraction]
-    D --> E[AI Analysis (GPT-4 / Claude)]
+    D --> E["AI Analysis (GPT-4 / Claude)"]
     E --> C
     C --> F[Final Report]
     
