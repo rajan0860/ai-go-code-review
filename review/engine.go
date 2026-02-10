@@ -6,10 +6,10 @@ import (
 	"github.com/rajanmehta/ai-go-code-review/analyzer"
 )
 
-func GenerateReport(issues []analyzer.Issue) {
+func GenerateReport(issues []analyzer.Issue, loc int) {
 	fmt.Println("Review Report:")
 
-	score := CalculateQualityScore(issues, 0)
+	score := CalculateQualityScore(issues, loc)
 	fmt.Printf("Quality Score: %.1f/10\n", score.OverallScore)
 
 	if len(issues) == 0 {

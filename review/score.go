@@ -29,8 +29,19 @@ func CalculateQualityScore(issues []analyzer.Issue, linesOfCode int) ScoreBreakd
 	}
 
 	baseScore := 10.0
-	// Simple penalty system, could be more complex with LOC normalization
-	finalScore := math.Max(0, baseScore-deduction)
+
+	// Normalize deduction based on Lines of Code (LOC)
+	// Larger files are expected to have more issues, so we dampen the penalty.
+	// Factor = 1.0 for small files, decreases as LOC increases.
+	// Using a log-based damping factor: factor = 1 / log10(max(LOC, 10))
+
+	dampingFactor := 1.0
+	if linesOfCode > 10 {
+		dampingFactor = 1.0 / math.Log10(float64(linesOfCode))
+	}
+
+	adjustedDeduction := deduction * dampingFactor
+	finalScore := math.Max(0, baseScore-adjustedDeduction)
 
 	return ScoreBreakdown{
 		OverallScore: finalScore,

@@ -1,7 +1,6 @@
 package analyzer
 
 import (
-	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -11,9 +10,9 @@ import (
 )
 
 type Issue struct {
-	File    string
-	Line    int
-	Message string
+	File     string
+	Line     int
+	Message  string
 	Severity string // "error", "warning", "info"
 }
 
@@ -28,7 +27,7 @@ func RunStaticAnalysis(rootPath string) ([]Issue, error) {
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
 			fileIssues, err := analyzeFile(path, fset)
 			if err != nil {
-				return err
+				return err // Propagate error, let caller log it
 			}
 			issues = append(issues, fileIssues...)
 		}
@@ -41,7 +40,7 @@ func RunStaticAnalysis(rootPath string) ([]Issue, error) {
 func analyzeFile(path string, fset *token.FileSet) ([]Issue, error) {
 	node, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse file %s: %w", path, err)
+		return nil, err // Return error directly
 	}
 
 	var issues []Issue
@@ -53,9 +52,9 @@ func analyzeFile(path string, fset *token.FileSet) ([]Issue, error) {
 				if pkg, ok := sel.X.(*ast.Ident); ok {
 					if pkg.Name == "fmt" && (sel.Sel.Name == "Println" || sel.Sel.Name == "Printf") {
 						issues = append(issues, Issue{
-							File:    path,
-							Line:    fset.Position(n.Pos()).Line,
-							Message: "Avoid using fmt.Print* in production code; use a structured logger instead.",
+							File:     path,
+							Line:     fset.Position(n.Pos()).Line,
+							Message:  "Avoid using fmt.Print* in production code; use a structured logger instead.",
 							Severity: "warning",
 						})
 					}
@@ -65,14 +64,14 @@ func analyzeFile(path string, fset *token.FileSet) ([]Issue, error) {
 		// Example check: Detect TODO comments
 		return true
 	})
-	
+
 	for _, commentGroup := range node.Comments {
 		for _, comment := range commentGroup.List {
 			if strings.Contains(comment.Text, "TODO") {
 				issues = append(issues, Issue{
-					File:    path,
-					Line:    fset.Position(comment.Pos()).Line,
-					Message: "Found TODO comment: " + comment.Text,
+					File:     path,
+					Line:     fset.Position(comment.Pos()).Line,
+					Message:  "Found TODO comment: " + comment.Text,
 					Severity: "info",
 				})
 			}
